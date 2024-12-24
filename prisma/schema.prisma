@@ -14,10 +14,36 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(cuid())
-  nom      String
-  prenom   String
-  email    String  @unique
-  password String
-  verified Boolean @default(false)
+  id               String         @id @default(cuid())
+  nom              String
+  prenom           String
+  email            String         @unique
+  password         String
+  verified         Boolean        @default(false)
+  messagesSent     Message[]      @relation("SendMessages")
+  messagesReceived Message[]      @relation("Receive messages")
+  Conversation1    Conversation[] @relation("user1")
+  Conversation2    Conversation[] @relation("user2")
+}
+
+model Message {
+  id             Int          @id @default(autoincrement())
+  content        String
+  senderId       String
+  receiverId     String
+  conversationId Int
+  createdAt      DateTime     @default(now())
+  sender         User         @relation("SendMessages", fields: [senderId], references: [id])
+  receiver       User         @relation("Receive messages", fields: [receiverId], references: [id])
+  Conversation   Conversation @relation(fields: [conversationId], references: [id])
+}
+
+model Conversation {
+  id        Int       @id @default(autoincrement())
+  userId_1  String
+  userId_2  String
+  messages  Message[]
+  user1     User      @relation("user1", fields: [userId_1], references: [id])
+  user2     User      @relation("user2", fields: [userId_2], references: [id])
+  createdAt DateTime  @default(now())
 }

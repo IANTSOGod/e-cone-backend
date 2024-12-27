@@ -26,9 +26,18 @@ export class AuthentificationService {
         const match = await compare(password, user.password);
         if (match) {
           if (user.verified === true) {
-            const payload = await this.generatePayload({ userId: user.id });
-            const access_token = payload.access_token;
-            return access_token;
+            const selectedUser = await this.prismaService.user.findUnique({
+              where: { email: user.email },
+              select: {
+                password: false,
+                id: true,
+                email: true,
+                nom: true,
+                prenom: true,
+                verified: true,
+              },
+            });
+            return selectedUser;
           } else {
             return { message: 'Email non vérifié', status: 401 };
           }
@@ -118,7 +127,7 @@ export class AuthentificationService {
       </div>
       <div class="main">
         <p class="description">Copy this token to validate your email</p>
-        <input type="text" value=${access_token} class="tokenInput" />
+        <input type="text" value=${access_token} class="tokenInput" readonly/>
       </div>
     </div>
   </body>

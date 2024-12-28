@@ -1,13 +1,17 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ChatService } from './chat.service';
-import { ConversationDTO } from 'src/dto/conversation.dto';
-import { Post, Body } from '@nestjs/common';
+import { ConvUserDTO } from 'src/dto/convUser.dto';
 @Controller('chat')
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
   @Post('getMessages')
-  async getMessages(@Body() data: ConversationDTO) {
-    return await this.chatService.getAllMessagesfromConv(data);
+  async getMessages(@Body() data: ConvUserDTO) {
+    return this.chatService.getAllMessagesfromUser(data);
+  }
+
+  @Post('getConv')
+  async getConv(@Body() data: ConvUserDTO) {
+    return this.chatService.getConv(data);
   }
 }

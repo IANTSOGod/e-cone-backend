@@ -46,4 +46,7 @@ model Conversation {
   user1     User      @relation("user1", fields: [userId_1], references: [id])
   user2     User      @relation("user2", fields: [userId_2], references: [id])
   createdAt DateTime  @default(now())
+
+  @@unique([userId_1, userId_2])
+  @@unique([userId_2, userId_1])
 }

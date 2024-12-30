@@ -39,16 +39,16 @@ export class AuthentificationService {
             });
             return selectedUser;
           } else {
-            return { message: 'Email non vérifié', status: 401 };
+            return { message: 'Email non vérifié' };
           }
         } else {
-          return { message: 'Incorrect password', status: 401 };
+          return { message: 'Mot de passe incorrect' };
         }
       } else {
-        return { message: 'User not found', status: 404 };
+        return { message: 'Utilisateur non trouvé' };
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -140,7 +140,7 @@ export class AuthentificationService {
             html: htmlContent,
           });
           if (resp) {
-            return { message: 'Un token envoyé', status: 200 };
+            return { message: 'Un token envoyé' };
           }
         } catch (error) {
           throw new Error(error);

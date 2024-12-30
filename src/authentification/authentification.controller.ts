@@ -27,7 +27,7 @@ export class AuthentificationController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('/confirmMail')
+  @Get('confirmMail')
   async setVerify(@Request() request: RequestWithUser) {
     return this.authService.setVerifiedEmail({ id: request.user.userId });
   }
